@@ -62,5 +62,7 @@ M.obsidian = {
   }
 }
 
--- more keybinds!
+
+
+  -- more keybinds!
 return M

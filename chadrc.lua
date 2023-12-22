@@ -12,6 +12,23 @@ M.ui = {
   hl_add = highlights.add,
 }
 
+-- M.ui = {
+--   statusline = {
+--     overriden_modules = function(modules)
+--       modules[1] = (function ()
+--         return "MODE!"
+--       end)()
+--
+--       table.insert(
+--         modules,
+--         2,
+--         (function()
+--             return vim.call['codeium#GetStatusString']
+--         end)()
+--       )
+--     end,
+--   },
+-- }
 M.plugins = "custom.plugins"
 
 -- check core.mappings for table structure

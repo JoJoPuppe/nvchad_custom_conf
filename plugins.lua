@@ -54,34 +54,45 @@ local plugins = {
       require("better_escape").setup()
     end,
   },
+  {
+    "Exafunction/codeium.vim",
+    event = "BufEnter",
+    config = function ()
+    -- Change '<C-g>' here to any keycode you like.
+    vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true })
+    vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
+    vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
+    vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
+  end
+  },
   -- copilot
-  {
-    "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
-    opts = overrides.copilot,
-  },
-
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      {
-        "zbirenbaum/copilot-cmp",
-        config = function()
-          require("copilot_cmp").setup()
-        end,
-      },
-    },
-    opts = {
-      sources = {
-        { name = "nvim_lsp", group_index = 2 },
-        { name = "copilot",  group_index = 2 },
-        { name = "luasnip",  group_index = 2 },
-        { name = "buffer",   group_index = 2 },
-        { name = "nvim_lua", group_index = 2 },
-        { name = "path",     group_index = 2 },
-      },
-    },
-  },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   event = "InsertEnter",
+  --   opts = overrides.copilot,
+  -- },
+  --
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   dependencies = {
+  --     {
+  --       "zbirenbaum/copilot-cmp",
+  --       config = function()
+  --         require("copilot_cmp").setup()
+  --       end,
+  --     },
+  --   },
+  --   opts = {
+  --     sources = {
+  --       { name = "nvim_lsp", group_index = 2 },
+  --       { name = "copilot",  group_index = 2 },
+  --       { name = "luasnip",  group_index = 2 },
+  --       { name = "buffer",   group_index = 2 },
+  --       { name = "nvim_lua", group_index = 2 },
+  --       { name = "path",     group_index = 2 },
+  --     },
+  --   },
+  -- },
   {
     "kevinhwang91/nvim-ufo",
     dependencies = {
@@ -286,6 +297,15 @@ local plugins = {
             -- Configuration here, or leave empty to use defaults
         })
     end
+  },
+  {
+    'akinsho/flutter-tools.nvim',
+    lazy = false,
+    dependencies = {
+        'nvim-lua/plenary.nvim',
+        'stevearc/dressing.nvim', -- optional for vim.ui.select
+    },
+    config = true,
   }
   -- To make a plugin not be loaded
   -- {
