@@ -1,4 +1,4 @@
-local overrides = require("custom.configs.overrides")
+local overrides = require "custom.configs.overrides"
 ---@type NvPluginSpec[]
 local plugins = {
 
@@ -23,7 +23,7 @@ local plugins = {
   -- override plugin configs
   {
     "williamboman/mason.nvim",
-    opts = overrides.mason
+    opts = overrides.mason,
   },
 
   {
@@ -32,13 +32,13 @@ local plugins = {
     dependencies = {
       "kevinhwang91/nvim-ufo",
       config = function()
-        require('ufo').setup({
-            provider_selector = function(bufnr, filetype, buftype)
-                return {'treesitter', 'indent'}
-            end,
-        })
+        require("ufo").setup {
+          provider_selector = function(bufnr, filetype, buftype)
+            return { "treesitter", "indent" }
+          end,
+        }
       end,
-    }
+    },
   },
 
   {
@@ -57,13 +57,21 @@ local plugins = {
   {
     "Exafunction/codeium.vim",
     event = "BufEnter",
-    config = function ()
-    -- Change '<C-g>' here to any keycode you like.
-    vim.keymap.set('i', '<C-g>', function () return vim.fn['codeium#Accept']() end, { expr = true })
-    vim.keymap.set('i', '<c-;>', function() return vim.fn['codeium#CycleCompletions'](1) end, { expr = true })
-    vim.keymap.set('i', '<c-,>', function() return vim.fn['codeium#CycleCompletions'](-1) end, { expr = true })
-    vim.keymap.set('i', '<c-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
-  end
+    config = function()
+      -- Change '<C-g>' here to any keycode you like.
+      vim.keymap.set("i", "<C-g>", function()
+        return vim.fn["codeium#Accept"]()
+      end, { expr = true })
+      vim.keymap.set("i", "<c-;>", function()
+        return vim.fn["codeium#CycleCompletions"](1)
+      end, { expr = true })
+      vim.keymap.set("i", "<c-,>", function()
+        return vim.fn["codeium#CycleCompletions"](-1)
+      end, { expr = true })
+      vim.keymap.set("i", "<c-x>", function()
+        return vim.fn["codeium#Clear"]()
+      end, { expr = true })
+    end,
   },
   -- copilot
   -- {
@@ -104,25 +112,27 @@ local plugins = {
   {
     "ekickx/clipboard-image.nvim",
     opts = {
-        -- Default configuration for all filetype
-        default = {
-          img_dir = "images",
-          img_name = function() return os.date('%Y-%m-%d-%H-%M-%S') end, -- Example result: "2021-04-13-10-04-18"
-          affix = "<\n  %s\n>" -- Multi lines affix
-        },
-        -- You can create configuration for ceartain filetype by creating another field (markdown, in this case)
-        -- If you're uncertain what to name your field to, you can run `lua print(vim.bo.filetype)`
-        -- Missing options from `markdown` field will be replaced by options from `default` field
-        markdown = {
-          img_dir = {"assets"}, -- Use table for nested dir (New feature form PR #20)
-          img_dir_txt = "",
-          affix = "![[%s]]",
-          img_handler = function(img) -- New feature from PR #22
-            local script = string.format('./image_compressor.sh "%s"', img.path)
-            os.execute(script)
-          end,
-        }
+      -- Default configuration for all filetype
+      default = {
+        img_dir = "images",
+        img_name = function()
+          return os.date "%Y-%m-%d-%H-%M-%S"
+        end, -- Example result: "2021-04-13-10-04-18"
+        affix = "<\n  %s\n>", -- Multi lines affix
       },
+      -- You can create configuration for ceartain filetype by creating another field (markdown, in this case)
+      -- If you're uncertain what to name your field to, you can run `lua print(vim.bo.filetype)`
+      -- Missing options from `markdown` field will be replaced by options from `default` field
+      markdown = {
+        img_dir = { "assets" }, -- Use table for nested dir (New feature form PR #20)
+        img_dir_txt = "",
+        affix = "![[%s]]",
+        img_handler = function(img) -- New feature from PR #22
+          local script = string.format('./image_compressor.sh "%s"', img.path)
+          os.execute(script)
+        end,
+      },
+    },
     ft = { "markdown", "text" },
   },
   {
@@ -140,7 +150,7 @@ local plugins = {
     config = function()
       -- calling `setup` is optional for customization
       require("fzf-lua").setup()
-    end
+    end,
   },
   {
     "epwalsh/obsidian.nvim",
@@ -167,7 +177,7 @@ local plugins = {
       -- "preservim/vim-markdown",
     },
     opts = {
-      dir = "/Users/loeper/Library/CloudStorage/Dropbox/JoJosVault/",  -- no need to call 'vim.fn.expand' here
+      dir = "/Users/loeper/Library/CloudStorage/Dropbox/JoJosVault/", -- no need to call 'vim.fn.expand' here
       -- Optional, if you keep notes in a specific subdirectory of your vault.
       notes_subdir = "notes",
       log_level = vim.log.levels.DEBUG,
@@ -175,12 +185,12 @@ local plugins = {
         -- Optional, if you keep daily notes in a separate directory.
         folder = "notes/dailies",
         -- Optional, if you want to change the date format for daily notes.
-        date_format = "%Y-%m-%d"
+        date_format = "%Y-%m-%d",
       },
       completion = {
         nvim_cmp = true,
         min_chars = 2,
-        new_notes_location = "current_dir"
+        new_notes_location = "current_dir",
       },
 
       -- Optional, customize how names/IDs for new notes are created.
@@ -226,7 +236,7 @@ local plugins = {
       -- URL it will be ignored but you can customize this behavior here.
       follow_url_func = function(url)
         -- Open the URL in the default web browser.
-        vim.fn.jobstart({"open", url})  -- Mac OS
+        vim.fn.jobstart { "open", url } -- Mac OS
         -- vim.fn.jobstart({"xdg-open", url})  -- linux
       end,
 
@@ -260,53 +270,113 @@ local plugins = {
     end,
   },
   {
-    "ggandor/leap.nvim",
-     event = 'BufRead',
-    dependencies = {
-      'tpope/vim-repeat',
-    },
-    config = function()
-      require('leap').add_default_mappings()
-    end,
-  },
-  {
-    'windwp/nvim-ts-autotag',
+    "windwp/nvim-ts-autotag",
     lazy = false,
     config = function()
-      require('nvim-ts-autotag').setup()
+      require("nvim-ts-autotag").setup()
     end,
-  },
-  {
-    "jackMort/ChatGPT.nvim",
-      event = "VeryLazy",
-      config = function()
-        require("chatgpt").setup()
-      end,
-      dependencies = {
-        "MunifTanjim/nui.nvim",
-        "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim"
-      }
   },
   {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-        require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-        })
-    end
+      require("nvim-surround").setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
   },
   {
-    'akinsho/flutter-tools.nvim',
+    "akinsho/flutter-tools.nvim",
     lazy = false,
     dependencies = {
-        'nvim-lua/plenary.nvim',
-        'stevearc/dressing.nvim', -- optional for vim.ui.select
+      "nvim-lua/plenary.nvim",
+      "stevearc/dressing.nvim", -- optional for vim.ui.select
     },
     config = true,
-  }
+  },
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local lint = require "lint"
+      lint.linters_by_ft = {
+        python = {
+          "pylint",
+          "mypy",
+        },
+      }
+    end,
+  },
+  {
+    "stevearc/conform.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local conform = require "conform"
+      conform.setup {
+        formatters_by_ft = {
+          python = {
+            "isort",
+            "black",
+          },
+        },
+        format_on_save = {
+          lsp_fallback = true,
+          async = false,
+          timeout_ms = 500,
+        },
+      }
+    end,
+  },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    ---@type Flash.Config
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
+  },
+  {
+    "RRethy/vim-illuminate",
+    event = { "BufReadPost", "BufWritePost", "BufNewFile" },
+    opts = {
+      delay = 200,
+      large_file_cutoff = 2000,
+      large_file_overrides = {
+        providers = { "lsp", "treesitter", "regex" },
+      },
+    },
+    config = function(_, opts)
+      require("illuminate").configure(opts)
+
+      local function map(key, dir, buffer)
+        vim.keymap.set("n", key, function()
+          require("illuminate")["goto_" .. dir .. "_reference"](false)
+        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+      end
+
+      map("]]", "next")
+      map("[[", "prev")
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          local buffer = vim.api.nvim_get_current_buf()
+          map("]]", "next", buffer)
+          map("[[", "prev", buffer)
+        end,
+      })
+    end,
+    keys = {
+      { "]]", desc = "Next Reference" },
+      { "[[", desc = "Prev Reference" },
+    },
+  },
+
   -- To make a plugin not be loaded
   -- {
   --   "NvChad/nvim-colorizer.lua",
